@@ -42,7 +42,8 @@ module.exports.editBook = (req, res, next) => {
     if (book) {
         book.title = req.body.title;
         saveDataToFile(DB);
-        res.status(200).send(book);
+        const result = parseBooks(DB);
+        res.status(200).send(result);
     } else {
         next(new NotFoundError('Книга не найдена'));
     }
@@ -58,7 +59,8 @@ module.exports.editAuthor = (req, res, next) => {
             author.author = req.body.author;
         }
         saveDataToFile(DB);
-        res.status(200).send(author);
+        const result = parseBooks(DB);
+        res.status(200).send(result);
     } else {
         next(new NotFoundError('Автор не найден'));
     }
@@ -78,7 +80,7 @@ module.exports.addBook = (req, res) => {
         const newAuthor = {
             id: DB.authors.length + 1,
             author: req.body.author,
-            bio: "Описание пока отсутствует. Вы можете заполнить его самостоятельно. Для этого кликните по Ф.И.О. автора",
+            bio: "Описание пока отсутствует. Вы можете заполнить его самостоятельно. Для этого введите сюда любой текст и нажмите кнопку 'сохранить'",
             authorStrId: sha1(req.body.author)
         }
         DB.authors.push(newAuthor);
